@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureGen - Advanced Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background particles -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <div class="main-container">
+        <!-- Generator Container -->
+        <div class="generator-container">
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">
+                    <div class="logo-icon">🔐</div>
+                </div>
+                <h1 class="title">SecureGen</h1>
+                <p class="subtitle">Generate ultra-secure passwords instantly</p>
+            </div>
+
+            <!-- Password Display -->
+            <div class="password-display">
+                <div class="password-container">
+                    <input type="text" class="password-output" id="passwordOutput" placeholder="Your secure password..." readonly>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="actions">
+                <button class="btn btn-primary" id="generateBtn">
+                    <span>⚡</span>
+                    Generate Password
+                </button>
+                <button class="btn btn-secondary" id="copyBtn">
+                    <span>📋</span>
+                    Copy to Clipboard
+                </button>
+                <button class="btn btn-save" id="saveBtn">
+                    <span>💾</span>
+                    Save Password
+                </button>
+            </div>
+        </div>
+
+        <!-- Saved Passwords Container -->
+        <div class="saved-passwords-container">
+            <div class="saved-header">
+                <h2 class="saved-title">
+                    <span>🗂️</span>
+                    Saved Passwords
+                </h2>
+                <p class="saved-subtitle">Your locally stored secure passwords</p>
+            </div>
+
+            <div class="saved-passwords-list" id="savedPasswordsList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔒</div>
+                    <h3>No saved passwords</h3>
+                    <p>Generate and save passwords to see them here</p>
+                </div>
+            </div>
+
+            <button class="clear-all-btn" id="clearAllBtn" style="display: none;">
+                <span>🗑️</span>
+                Clear All Passwords
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span>✅</span>
+        <span id="toastMessage">Password copied to clipboard!</span>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
