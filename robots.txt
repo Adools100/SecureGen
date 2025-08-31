@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://adools100.github.io/SecureGen/sitemap.xml
