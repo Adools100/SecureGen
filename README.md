@@ -20,7 +20,7 @@ It helps users quickly generate strong passwords.
 
 
 ## 💡 How to Use
-1. Open the app in your browser.
+1. Open this link adools100.github.io/SecureGen/
 2. Select the desired password length and options.
 3. Click **Generate** to get a strong password.
 4. Copy and use securely.
