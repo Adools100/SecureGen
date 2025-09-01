@@ -170,7 +170,6 @@ function savePassword() {
   
   updateSavedPasswordsList();
   showToast('💾 Password saved successfully!');
-  console.log(savedPasswords)
 }
 
 // Get saved passwords from local storage
@@ -244,6 +243,7 @@ function clearAllPasswords() {
     localStorage.removeItem('savedPasswords');
     updateSavedPasswordsList();
     showToast('🧹 All passwords cleared!');
+    console.log('Passwords cleared!')
   }
 }
 
@@ -269,5 +269,12 @@ passwordOutput.addEventListener('click', copyToClipboard);
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
   updateSavedPasswordsList();
+  consoleFun()
 
 });
+
+function consoleFun(){
+  console.log(`Hello, I guess you're an Engineer 😎`)
+  console.log('Contact me at: ')
+  console.log('👍 adoolslimitless@gmail.com')
+}
