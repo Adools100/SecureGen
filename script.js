@@ -72,7 +72,6 @@ const newContentCSS = `
 }
 `;
 
-// Add the CSS to the head of the document
 const style = document.createElement('style');
 style.textContent = newContentCSS;
 document.head.appendChild(style);
@@ -87,10 +86,8 @@ const clearAllBtn = document.getElementById('clearAllBtn');
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 
-// Current generated password
 let currentPassword = '';
 
-// getRandom function
 function getRandom() {
   const lettersUpper1index = Math.floor(Math.random() * lettersUpper1.length);
   const lettersUpper1result = lettersUpper1[lettersUpper1index];
@@ -124,12 +121,10 @@ function getRandom() {
   return finalResult;
 }
 
-// Generate password and display
 function generatePassword() {
   currentPassword = getRandom();
   passwordOutput.value = currentPassword;
   
-  // Add glow animation
   passwordOutput.classList.add('newly-generated');
   setTimeout(() => {
     passwordOutput.classList.remove('newly-generated');
@@ -138,7 +133,6 @@ function generatePassword() {
   showToast('🎉 New password generated!');
 }
 
-// Copy to clipboard
 async function copyToClipboard() {
   if (!currentPassword) {
     showToast('❌ No password to copy!');
@@ -150,7 +144,6 @@ async function copyToClipboard() {
 
 }
 
-// Save password to local storage
 function savePassword() {
   if (!currentPassword) {
     showToast('❌ No password to save!');
@@ -172,13 +165,11 @@ function savePassword() {
   showToast('💾 Password saved successfully!');
 }
 
-// Get saved passwords from local storage
 function getSavedPasswords() {
   const saved = localStorage.getItem('savedPasswords');
   return saved ? JSON.parse(saved) : [];
 }
 
-// Update saved passwords display
 function updateSavedPasswordsList() {
   const savedPasswords = getSavedPasswords();
   
@@ -217,7 +208,6 @@ function updateSavedPasswordsList() {
   `).join('');
 }
 
-// Copy saved password
 async function copySavedPassword(password) {
   try {
     await navigator.clipboard.writeText(password);
@@ -227,7 +217,6 @@ async function copySavedPassword(password) {
   }
 }
 
-// Delete saved password
 function deleteSavedPassword(id) {
   const savedPasswords = getSavedPasswords();
   const filteredPasswords = savedPasswords.filter(p => p.id !== id);
@@ -237,7 +226,6 @@ function deleteSavedPassword(id) {
   showToast('🗑️ Password deleted!');
 }
 
-// Clear all saved passwords
 function clearAllPasswords() {
   if (confirm('Are you sure you want to delete all saved passwords?')) {
     localStorage.removeItem('savedPasswords');
@@ -247,7 +235,6 @@ function clearAllPasswords() {
   }
 }
 
-// Show toast notification
 function showToast(message) {
   toastMessage.textContent = message;
   toast.classList.add('show');
@@ -257,16 +244,13 @@ function showToast(message) {
   }, 3000);
 }
 
-// Event listeners
 generateBtn.addEventListener('click', generatePassword);
 copyBtn.addEventListener('click', copyToClipboard);
 saveBtn.addEventListener('click', savePassword);
 clearAllBtn.addEventListener('click', clearAllPasswords);
 
-// Allow clicking on password output to copy
 passwordOutput.addEventListener('click', copyToClipboard);
 
-// Initialize
 document.addEventListener('DOMContentLoaded', function() {
   updateSavedPasswordsList();
   consoleFun()

@@ -75,7 +75,6 @@ body {
     }
 }
 
-/* Main container */
 .main-container {
     display: flex;
     gap: 30px;
@@ -129,7 +128,6 @@ body {
     }
 }
 
-/* Header */
 .header {
     text-align: center;
     margin-bottom: 40px;
@@ -182,7 +180,6 @@ body {
     line-height: 1.5;
 }
 
-/* Password Display */
 .password-display {
     margin-bottom: 40px;
 }
@@ -238,7 +235,6 @@ body {
     font-style: italic;
 }
 
-/* Action Buttons */
 .actions {
     display: flex;
     gap: 15px;
@@ -315,7 +311,6 @@ body {
     transform: scale(0.98);
 }
 
-/* Saved Passwords Section */
 .saved-header {
     margin-bottom: 30px;
 }
@@ -502,7 +497,6 @@ body {
     border-color: rgba(255, 107, 107, 0.5);
 }
 
-/* Toast notification */
 .toast {
     position: fixed;
     top: 30px;
