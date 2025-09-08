@@ -1,82 +1,11 @@
-// My password generation arrays
-const lettersUpper1 = [
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-];
-const letterslower1 = [
-  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-];
-const symbols1 = [
-  '!', '@', '#', '$', '%', '^', '&', '*', '-', '_', '=', '+',
-  '[', ']', ';', '?', '~',
-];
-const numbers1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-const letterslower2 = [
-  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-];
-const lettersUpper2 = [
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-];
-const symbols2 = [
-  '!', '@', '#', '$', '%', '^', '&', '*', '-', '_', '=', '+',
-  '[', ']', ';', '?', '~',
-];
-const numbers2 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-const symbols3 = [
-  '!', '@', '#', '$', '%', '^', '&', '*', '-', '_', '=', '+',
-  '[', ']', ';', '/', '?', '~',
-];
+const charSets = {
+  uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  lowercase: 'abcdefghijklmnopqrstuvwxyz',
+  numbers: '0123456789',
+  symbols: '!@#$%^&*-_=+[]?~'
+};
 
-// CSS for newly generated content animation
-const newContentCSS = `
-.newly-generated {
-    animation: newContentGlow 2s ease-out;
-    position: relative;
-    overflow: hidden;
-}
-
-.newly-generated::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    animation: newContentSweep 1.5s ease-out;
-}
-
-@keyframes newContentGlow {
-    0% {
-        background: rgba(72, 202, 178, 0.3);
-        box-shadow: 0 0 20px rgba(72, 202, 178, 0.6);
-        transform: scale(1.02);
-    }
-    100% {
-        background: transparent;
-        box-shadow: none;
-        transform: scale(1);
-    }
-}
-
-@keyframes newContentSweep {
-    0% {
-        left: -100%;
-    }
-    100% {
-        left: 100%;
-    }
-}
-`;
-
-const style = document.createElement('style');
-style.textContent = newContentCSS;
-document.head.appendChild(style);
-
-
+// DOM elements
 const passwordOutput = document.getElementById('passwordOutput');
 const generateBtn = document.getElementById('generateBtn');
 const copyBtn = document.getElementById('copyBtn');
@@ -85,84 +14,178 @@ const savedPasswordsList = document.getElementById('savedPasswordsList');
 const clearAllBtn = document.getElementById('clearAllBtn');
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
-
+const toastIcon = document.getElementById('toastIcon');
+const strengthIndicator = document.getElementById('strengthIndicator');
+const charIndicators = document.getElementById('charIndicators');
+const saveCounter = document.getElementById('saveCounter');
+const achievement = document.getElementById('achievement');
+const celebration = document.getElementById('celebration');
 let currentPassword = '';
+let saveCount = parseInt(localStorage.getItem('saveCount') || '0');
 
-function getRandom() {
-  const lettersUpper1index = Math.floor(Math.random() * lettersUpper1.length);
-  const lettersUpper1result = lettersUpper1[lettersUpper1index];
+// Update save counter display
+function updateSaveCounter() {
+  if (saveCount > 0) {
+      saveCounter.textContent = saveCount;
+      saveCounter.classList.add('show');
+  } else {
+      saveCounter.classList.remove('show');
+  }
+}
 
-  const numbers1index = Math.floor(Math.random() * numbers1.length);
-  const numbers1result = numbers1[numbers1index];
-
-  const symbols1index = Math.floor(Math.random() * symbols1.length);
-  const symbols1result = symbols1[symbols1index];
-
-  const letterslower1index = Math.floor(Math.random() * letterslower1.length);
-  const letterslower1result = letterslower1[letterslower1index];
-
-  const lettersUpper2index = Math.floor(Math.random() * lettersUpper2.length);
-  const lettersUpper2result = lettersUpper2[lettersUpper2index];
-
-  const numbers2index = Math.floor(Math.random() * numbers2.length);
-  const numbers2result = numbers2[numbers2index];
-
-  const symbols2index = Math.floor(Math.random() * symbols2.length);
-  const symbols2result = symbols2[symbols2index];
-
-  const lettersLower2index = Math.floor(Math.random() * letterslower2.length);
-  const letterslower2result = letterslower2[lettersLower2index];
-
-  const symbols3index = Math.floor(Math.random() * symbols3.length);
-  const symbols3result = symbols3[symbols3index];
-
-  const finalResult = `${lettersUpper1result}${numbers1result}${symbols1result}${letterslower1result}${lettersUpper2result}${numbers2result}${symbols2result}${letterslower2result}${symbols3result}`;
+function generateSecurePassword() {
+  let password = '';
+  const allSets = Object.values(charSets);
   
-  return finalResult;
+  password += getRandomChar(charSets.uppercase);
+  password += getRandomChar(charSets.lowercase);
+  password += getRandomChar(charSets.numbers);
+  password += getRandomChar(charSets.symbols);
+  
+  const allChars = allSets.join('');
+  for (let i = 4; i < 8; i++) {
+      password += getRandomChar(allChars);
+  }
+  
+  return shuffleString(password);
+}
+
+function getRandomChar(charset) {
+  return charset.charAt(Math.floor(Math.random() * charset.length));
+}
+
+function shuffleString(str) {
+  return str.split('').sort(() => Math.random() - 0.5).join('');
+}
+
+function analyzePassword(password) {
+  const analysis = {
+      hasUpper: /[A-Z]/.test(password),
+      hasLower: /[a-z]/.test(password),
+      hasNumber: /[0-9]/.test(password),
+      hasSymbol: /[!@#$%^&*\-_=+\[\]?~]/.test(password)
+  };
+  
+  document.getElementById('upperIndicator').classList.toggle('active', analysis.hasUpper);
+  document.getElementById('lowerIndicator').classList.toggle('active', analysis.hasLower);
+  document.getElementById('numberIndicator').classList.toggle('active', analysis.hasNumber);
+  document.getElementById('symbolIndicator').classList.toggle('active', analysis.hasSymbol);
+  
+  const strengthBars = strengthIndicator.querySelectorAll('.strength-bar');
+  const activeTypes = Object.values(analysis).filter(Boolean).length;
+  const lengthScore = password.length >= 8 ? 1 : 0;
+  const totalStrength = Math.min(5, activeTypes + lengthScore);
+  
+  strengthBars.forEach((bar, index) => {
+      bar.classList.toggle('active', index < totalStrength);
+  });
+  
+  
+  strengthIndicator.style.opacity = '1';
+  charIndicators.style.opacity = '1';
 }
 
 function generatePassword() {
-  currentPassword = getRandom();
+  currentPassword = generateSecurePassword();
   passwordOutput.value = currentPassword;
   
-  passwordOutput.classList.add('newly-generated');
-  setTimeout(() => {
-    passwordOutput.classList.remove('newly-generated');
-  }, 2000);
+  // Add sparkle effect
+  createSparkles();
   
-  showToast('🎉 New password generated!');
+  analyzePassword(currentPassword);
+  
+  passwordOutput.parentElement.classList.add('newly-generated');
+  setTimeout(() => {
+      passwordOutput.parentElement.classList.remove('newly-generated');
+  }, 2500);
+  
+  showToast('🎉', 'New secure password generated!');
+}
+
+function createSparkles() {
+  const container = document.querySelector('.generator-container');
+  for (let i = 0; i < 12; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = Math.random() * 100 + '%';
+      sparkle.style.top = Math.random() * 100 + '%';
+      sparkle.style.animationDelay = Math.random() * 2 + 's';
+      container.appendChild(sparkle);
+      
+      setTimeout(() => sparkle.remove(), 2000);
+  }
 }
 
 async function copyToClipboard() {
   if (!currentPassword) {
-    showToast('❌ No password to copy!');
-    return;
+      showToast('❌', 'No password to copy!');
+      return;
   }
 
-    await navigator.clipboard.writeText(currentPassword);
-    showToast('✅ Password copied to clipboard!');
-
+  try {
+      await navigator.clipboard.writeText(currentPassword);
+      showToast('✅', 'Password copied to clipboard!');
+  } catch (err) {
+      showToast('❌', 'Failed to copy password');
+  }
 }
 
 function savePassword() {
   if (!currentPassword) {
-    showToast('❌ No password to save!');
-    return;
+      showToast('❌', 'No password to save!');
+      return;
   }
 
   const savedPasswords = getSavedPasswords();
   const newPassword = {
-    id: Date.now(),
-    password: currentPassword,
-    createdAt: new Date().toLocaleString(),
-    label: `Password ${savedPasswords.length + 1}`
+      id: Date.now(),
+      password: currentPassword,
+      createdAt: new Date().toLocaleString(),
+      label: `Password ${savedPasswords.length + 1}`,
   };
 
   savedPasswords.unshift(newPassword);
   localStorage.setItem('savedPasswords', JSON.stringify(savedPasswords));
   
+  saveCount++;
+  localStorage.setItem('saveCount', saveCount.toString());
+  updateSaveCounter();
+  
   updateSavedPasswordsList();
-  showToast('💾 Password saved successfully!');
+  showToast('💾', 'Password saved successfully!');
+  
+  if (saveCount === 7) {
+      triggerAchievement();
+  }
+}
+
+function triggerAchievement() {
+  createConfetti();
+  
+  setTimeout(() => {
+      achievement.classList.add('show');
+      showToast('🏆', 'Achievement Unlocked: Password Master!');
+      
+      setTimeout(() => {
+          achievement.classList.remove('show');
+      }, 4000);
+  }, 500);
+}
+
+function createConfetti() {
+  const colors = ['#ff6b6b', '#feca57', '#48cab2', '#667eea', '#764ba2'];
+  
+  for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDelay = Math.random() * 3 + 's';
+      confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      celebration.appendChild(confetti);
+      
+      setTimeout(() => confetti.remove(), 5000);
+  }
 }
 
 function getSavedPasswords() {
@@ -172,75 +195,75 @@ function getSavedPasswords() {
 
 function updateSavedPasswordsList() {
   const savedPasswords = getSavedPasswords();
-  
+
   if (savedPasswords.length === 0) {
-    savedPasswordsList.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">🔒</div>
-        <h3>No saved passwords</h3>
-        <p>Generate and save passwords to see them here</p>
-      </div>
-    `;
-    clearAllBtn.style.display = 'none';
-    return;
+      savedPasswordsList.innerHTML = `
+          <div class="empty-state">
+              <div class="empty-state-icon">🔒</div>
+              <h3>No saved passwords</h3>
+              <p>Generate and save passwords to see them here</p>
+          </div>
+      `;
+      clearAllBtn.style.display = 'none';
+      return;
   }
 
   clearAllBtn.style.display = 'block';
-  
-  savedPasswordsList.innerHTML = savedPasswords.map(item => `
-    <div class="saved-password-item" data-id="${item.id}">
-      <div class="saved-password-header">
-        <span class="saved-password-label">${item.label}</span>
-        <span class="saved-password-date">${item.createdAt}</span>
-      </div>
-      <div class="saved-password-display">
-        <div class="saved-password-text">${item.password}</div>
-      </div>
-      <div class="saved-password-actions">
-        <button class="btn-small btn-copy-saved" onclick="copySavedPassword('${item.password}')">
-          📋 Copy
-        </button>
-        <button class="btn-small btn-delete" onclick="deleteSavedPassword(${item.id})">
-          🗑️ Delete
-        </button>
-      </div>
-    </div>
-  `).join('');
+  savedPasswordsList.innerHTML = savedPasswords
+      .map((item) => `
+          <div class="saved-password-item" data-id="${item.id}">
+              <div class="saved-password-header">
+                  <span class="saved-password-label">${item.label}</span>
+                  <span class="saved-password-date">${item.createdAt}</span>
+              </div>
+              <div class="saved-password-display">
+                  <div class="saved-password-text">${item.password}</div>
+              </div>
+              <div class="saved-password-actions">
+                  <button class="btn-small btn-copy-saved" onclick="copySavedPassword('${item.password}')">
+                      📋 Copy
+                  </button>
+                  <button class="btn-small btn-delete" onclick="deleteSavedPassword(${item.id})">
+                      🗑️ Delete
+                  </button>
+              </div>
+          </div>
+      `).join('');
 }
 
 async function copySavedPassword(password) {
   try {
-    await navigator.clipboard.writeText(password);
-    showToast('✅ Saved password copied!');
+      await navigator.clipboard.writeText(password);
+      showToast('✅', 'Saved password copied!');
   } catch (err) {
-    showToast('❌ Failed to copy password');
+      showToast('❌', 'Failed to copy password');
   }
 }
 
 function deleteSavedPassword(id) {
   const savedPasswords = getSavedPasswords();
-  const filteredPasswords = savedPasswords.filter(p => p.id !== id);
+  const filteredPasswords = savedPasswords.filter((p) => p.id !== id);
   localStorage.setItem('savedPasswords', JSON.stringify(filteredPasswords));
-  
+
   updateSavedPasswordsList();
-  showToast('🗑️ Password deleted!');
+  showToast('🗑️', 'Password deleted!');
 }
 
 function clearAllPasswords() {
   if (confirm('Are you sure you want to delete all saved passwords?')) {
-    localStorage.removeItem('savedPasswords');
-    updateSavedPasswordsList();
-    showToast('🧹 All passwords cleared!');
-    console.log('Passwords cleared!')
+      localStorage.removeItem('savedPasswords');
+      updateSavedPasswordsList();
+      showToast('🧹', 'All passwords cleared!');
   }
 }
 
-function showToast(message) {
+function showToast(icon, message) {
+  toastIcon.textContent = icon;
   toastMessage.textContent = message;
   toast.classList.add('show');
-  
+
   setTimeout(() => {
-    toast.classList.remove('show');
+      toast.classList.remove('show');
   }, 3000);
 }
 
@@ -248,17 +271,16 @@ generateBtn.addEventListener('click', generatePassword);
 copyBtn.addEventListener('click', copyToClipboard);
 saveBtn.addEventListener('click', savePassword);
 clearAllBtn.addEventListener('click', clearAllPasswords);
-
 passwordOutput.addEventListener('click', copyToClipboard);
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+  updateSaveCounter();
   updateSavedPasswordsList();
-  consoleFun()
-
+  consoleFun();
 });
 
-function consoleFun(){
-  console.log(`Hello, I guess you're an Engineer 😎`)
-  console.log('Contact me at: ')
-  console.log('👍 adoolslimitless@gmail.com')
+function consoleFun() {
+  console.log(`Hello, I guess you're an Engineer 😎`);
+  console.log('Say Hi to me at: ');
+  console.log('👍 adoolslimitless@gmail.com');
 }

@@ -1,105 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SecureGen - Free Online Password Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 
-<meta name="description" content="SecureGen helps you create strong, secure, and unique passwords instantly. Free, simple, and safe password generator.">
-    <meta name="keywords" content="SecureGen, password generator, secure passwords, strong passwords, GitHub project" />
+    <meta
+      name="description"
+      content="SecureGen helps you create strong, secure, and unique passwords instantly. Free, simple, and safe password generator."
+    />
+    <meta
+      name="keywords"
+      content="SecureGen, password generator, secure passwords, strong passwords, GitHub project"
+    />
     <meta name="author" content="Adools" />
-    <meta name="google-site-verification" content="sOjg6Y_ga-PaPHCC90D9ugNezX6aiTYuFT1srRAu49Y" />
-    <meta name="robots" content="index, follow">
+    <meta
+      name="google-site-verification"
+      content="sOjg6Y_ga-PaPHCC90D9ugNezX6aiTYuFT1srRAu49Y"
+    />
+    <meta name="robots" content="index, follow" />
 
-     <meta property="og:title" content="SecureGen – Secure Password Generator" />
-  <meta property="og:description" content="Generate strong and unique passwords instantly with SecureGen." />
-  <meta property="og:url" content="https://adools100.github.io/SecureGen/" />
-  <meta property="og:type" content="website" />
+    <meta property="og:title" content="SecureGen – Secure Password Generator" />
+    <meta
+      property="og:description"
+      content="Generate strong and unique passwords instantly with SecureGen."
+    />
+    <meta property="og:url" content="https://adools100.github.io/SecureGen/" />
+    <meta property="og:type" content="website" />
 
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "SecureGen",
-  "url": "https://adools100.github.io/SecureGen/",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://adools100.github.io/SecureGen/?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "SecureGen",
+        "url": "https://adools100.github.io/SecureGen/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://adools100.github.io/SecureGen/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+  </head>
+  <body>
+<div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
 
-</head>
-<body>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
+    <!-- Celebration effects container -->
+    <div class="celebration" id="celebration"></div>
+
+    <!-- Achievement popup -->
+    <div class="achievement" id="achievement">
+        <div class="achievement-icon">🏆</div>
+        <h3>Password Master!</h3>
+        <p>You've saved 7 passwords! You're getting good at this security thing! 🔐✨</p>
+    </div>
 
     <div class="main-container">
-        <div class="generator-container">
-            <div class="header">
-                <div class="logo">
-                    <div class="logo-icon">🔐</div>
-                </div>
-                <h1 class="title">SecureGen</h1>
-                <p class="subtitle">Generate ultra-secure passwords instantly</p>
-            </div>
-
-            <div class="password-display">
-                <div class="password-container">
-                    <input type="text" class="password-output" id="passwordOutput" placeholder="Your secure password..." readonly>
-                </div>
-            </div>
-
-            <div class="actions">
-                <button class="btn btn-primary" id="generateBtn">
-                    <span>⚡</span>
-                    Generate Password
-                </button>
-                <button class="btn btn-secondary" id="copyBtn">
-                    <span>📋</span>
-                    Copy to Clipboard
-                </button>
-                <button class="btn btn-save" id="saveBtn">
-                    <span>💾</span>
-                    Save Password
-                </button>
-            </div>
+      <div class="generator-container">
+        <div class="header">
+          <div class="logo">
+            <div class="logo-icon">🔐</div>
+          </div>
+          <h1 class="title">SecureGen</h1>
+          <p class="subtitle">Generate ultra-secure passwords instantly</p>
         </div>
 
-        <div class="saved-passwords-container">
-            <div class="saved-header">
-                <h2 class="saved-title">
-                    <span>🗂️</span>
-                    Saved Passwords
-                </h2>
-                <p class="saved-subtitle">Your locally stored secure passwords</p>
-            </div>
+        <div class="password-display">
+          <div class="password-container">
+            <input
+              type="text"
+              class="password-output"
+              id="passwordOutput"
+              placeholder="Your secure password..."
+              readonly
+            />
+          </div>
 
-            <div class="saved-passwords-list" id="savedPasswordsList">
-                <div class="empty-state">
-                    <div class="empty-state-icon">🔒</div>
-                    <h3>No saved passwords</h3>
-                    <p>Generate and save passwords to see them here</p>
-                </div>
-            </div>
+          <!-- Strength indicator -->
+          <div class="strength-indicator" id="strengthIndicator">
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+          </div>
 
-            <button class="clear-all-btn" id="clearAllBtn" style="display: none;">
-                <span>🗑️</span>
-                Clear All Passwords
-            </button>
+          <!-- Character type indicators -->
+          <div class="char-indicators" id="charIndicators">
+            <div class="char-type" id="upperIndicator">ABC</div>
+            <div class="char-type" id="lowerIndicator">abc</div>
+            <div class="char-type" id="numberIndicator">123</div>
+            <div class="char-type" id="symbolIndicator">@#$</div>
+          </div>
         </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="generateBtn">
+            <span>⚡</span>
+            Generate Password
+          </button>
+          <button class="btn btn-secondary" id="copyBtn">
+            <span>📋</span>
+            Copy to Clipboard 
+          </button>
+          <button class="btn btn-save" id="saveBtn">
+            <span>💾</span>
+            Save Password
+          </button>
+          <div style="display: none;" class="save-counter" id="saveCounter">0</div>
+        </div>
+      </div>
+
+      <div class="saved-passwords-container">
+        <div class="saved-header">
+          <h2 class="saved-title">
+            <span>🗂️</span>
+            Saved Passwords
+          </h2>
+          <p class="saved-subtitle">Your locally stored secure passwords</p>
+        </div>
+
+        <div class="saved-passwords-list" id="savedPasswordsList">
+          <div class="empty-state">
+            <div class="empty-state-icon">🔒</div>
+            <h3>No saved passwords</h3>
+            <p>Generate and save passwords to see them here</p>
+          </div>
+        </div>
+
+        <button class="clear-all-btn" id="clearAllBtn" style="display: none">
+          <span>🗑️</span>
+          Clear All Passwords
+        </button>
+      </div>
     </div>
 
     <div class="toast" id="toast">
-        <span>✅</span>
+        <span id="toastIcon">✅</span>
         <span id="toastMessage">Password copied to clipboard!</span>
     </div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
